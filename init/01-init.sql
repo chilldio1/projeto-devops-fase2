@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS visitas (
+    id SERIAL PRIMARY KEY,
+    momento TIMESTAMP DEFAULT NOW()
+);
