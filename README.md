@@ -24,34 +24,11 @@ Conta e persiste o número de visitas recebidas. Cada requisição HTTP incremen
       - ./init:/docker-entrypoint-initdb.d
 
 volumes:
-  postgres-dados:
-EOF
-Depois recria os containers:
-bashdocker compose down
-docker compose up -d
-docker ps
-Me cola o resultado do docker ps — agora deve aparecer a porta 8080 mapeada no container app.agora esta ok, rodei o curl e apareceu a minha visitaExcelente! Agora testa mais duas vezes:
-bashcurl http://localhost:8080
-curl http://localhost:8080
-O contador deve incrementar a cada chamada — isso prova que a app está conectando no Postgres e persistindo os dados corretamente.
-Depois derruba tudo sem -v e sobe de novo:
-bashdocker compose down
-docker compose up -d
-Aguarda uns 5 segundos e testa:
-bashcurl http://localhost:8080
-O número de visitas deve continuar de onde parou — isso prova que o volume está funcionando e os dados persistiram mesmo com os containers recriados.
-Me cola os resultados!isso mesmo, continuou de onde pareiPerfeito! O projeto está funcionando completamente:
-
 ✅ App Python conectando no Postgres
 ✅ Contador de visitas incrementando
 ✅ Dados persistindo entre reinicializações (volume funcionando)
 ✅ Dois serviços orquestrados pelo Compose
 
-
-Agora falta só o README — é o que transforma esse projeto num item de portfólio real. Recrutadores e tech leads olham o README antes de qualquer coisa.
-bashnano ~/projeto-devops/fase2-projeto/README.md
-Cole isso (personalize à vontade):
-markdown# Fase 2 — Projeto Docker
 
 Aplicação web em Python com banco de dados PostgreSQL, containerizada com Docker e orquestrada com Docker Compose.
 
