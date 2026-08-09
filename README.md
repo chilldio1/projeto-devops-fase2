@@ -14,42 +14,7 @@ Conta e persiste o número de visitas recebidas. Cada requisição HTTP incremen
 - Multi-stage build
 
 ## Estrutura
-curl: (7) Failed to connect to localhost port 8080 after 1 ms: Could not connect to serverA porta não está sendo exposta. Repara que no docker ps o container fase2-projeto-app-1 não mostra nenhuma porta mapeada — diferente do banco que mostra 5432/tcp.
-Isso significa que o Compose não aplicou o ports corretamente. Vamos verificar o arquivo:
-bashcd ~/projeto-devops/fase2-projeto
-cat docker-compose.yml
-Presta atenção na indentação do ports — em YAML, ele precisa estar no mesmo nível que build, environment e depends_on, dentro do serviço app:
-yamlservices:
-  app:
-    build: ./app
-    ports:            # ← mesmo nível que build
-      - "8080:8080"
-    environment:
-      ...
-Se a indentação estiver errada (um espaço a mais ou a menos), o YAML ignora a configuração silenciosamente. Me cola o resultado do cat docker-compose.yml.Achei o problema! A indentação está inconsistente. Repara:
-yaml  app:
-    build: ./app    # 4 espaços ✅
-    ports:          # 4 espaços ✅
-      - "8080:8080" # 6 espaços ✅
-    environment:    # 4 espaços ✅
-Mas olhando a imagem, build, ports, environment e depends_on estão com 4 espaços, enquanto banco: está com 2 espaços — isso é inconsistência que pode estar confundindo o parser do YAML.
-Vamos reescrever o arquivo do zero pra garantir:
-bashcat > docker-compose.yml << 'EOF'
-services:
-  app:
-    build: ./app
-    ports:
-      - "8080:8080"
-    environment:
-      DB_HOST: banco
-      DB_NAME: estudos
-      DB_USER: diogo
-      DB_PASSWORD: senha123
-    depends_on:
-      - banco
 
-  banco:
-    image: postgres:15
     environment:
       POSTGRES_USER: diogo
       POSTGRES_PASSWORD: senha123
